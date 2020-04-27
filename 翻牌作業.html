@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kid's Animal Flashcards </title>
+    <style>
+        #game {
+            margin: auto;
+            width: 1152px;
+            height: auto;
+            background-image: url('./bg.jpg');
+        }
+
+        .card {
+            width: 172px;
+            height: 264px;
+            margin: 10px;
+            transform-style: preserve-3d;
+            position: relative;
+            transform: rotateY(180deg);
+            transition: transform 0.5s;
+            float: left;
+            animation: begin 7s ease-out;
+        }
+
+        .front {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            position: absolute;
+        }
+
+        .back {
+            width: 100%;
+            height: 100%;
+            background-image: url(./撲克牌/Yellow_back.jpg);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 172px 264px;
+            position: absolute;
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+        }
+
+        .open {
+            transform: rotateY(0deg);
+        }
+
+        @keyframes begin {
+            from {
+                left: -258px;
+                transform: rotateX(180deg);
+            }
+
+            50% {
+                left: 258px;
+                transform: rotateX(0deg);
+            }
+
+            100% {
+                left: 0px;
+                transform: rotateY(180deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game"></div>
+    <script src="../../jquery-3.5.0.min.js"></script>
+    <script>
+        $(function () {
+            // 產生18張card
+            for (let i = 0; i < 18; i++) {
+                $("#game").append(`<div class="card">
+                <div class="front"></div>
+                <div class="back"></div>
+            </div>`)
+            }
+            // 指定數字
+            for (let i = 0; i < $(".card").length; i++) {
+                let num = i % ($(".card").length / 2) + 1;
+                $(".card").eq(i).find(".front").css("background-image", `url(./動物/${num}.png)`)
+                // 測試用,顯示卡號
+                $(".card").eq(i).attr("data-card", num)
+            }
+            // 洗10次, 隨洗一張放到隨機一張後
+            for (let i = 0; i < 10; i++) {
+                let wash = Math.floor(Math.random() * $(".card").length);
+                let randomcard = Math.floor(Math.random() * $(".card").length);
+                $(".card").eq(wash).insertAfter($(".card").eq(randomcard));
+            }
+
+            $(".card").on("click", function () {
+                // 如果翻開數量小於2, 且這一張還沒被翻開
+                if ($(".open").length < 2 && !$(this).hasClass("open"))
+                    $(this).addClass("open");
+                // 如果翻開兩張, 但一秒後會翻回來
+                if ($(".open").length == 2) {
+                    setTimeout(() => {
+                        $(".open").removeClass("open");
+                    }, 1000);
+                }
+                // 翻開兩張, 兩張都一樣, 1秒後會消失
+                if ($(".open").eq(0).find(".front").css("background-image") ==
+                    $(".open").eq(1).find(".front").css("background-image")) {
+                    $(".open").fadeTo(1000, 0).addClass("ok")
+                }
+            })
+        })
+    </script>
+
+</body>
+
+</html>
