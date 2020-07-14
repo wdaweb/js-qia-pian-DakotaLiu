@@ -7,10 +7,7 @@
     <title>Kid's Animal Flashcards </title>
     <style>
         #game {
-            margin: auto;
-            width: 1152px;
-            height: auto;
-            background-image: url('./bg.jpg');
+            background: url('./kidbg.jpg') fixed no-repeat center/cover;
         }
 
         .card {
@@ -37,7 +34,7 @@
         .back {
             width: 100%;
             height: 100%;
-            background-image: url(./撲克牌/Yellow_back.jpg);
+            background-image: url(./動物/Yellow_back.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-size: 172px 264px;
@@ -53,7 +50,7 @@
         @keyframes begin {
             from {
                 left: -258px;
-                transform: rotateX(180deg);
+                transform: rotateY(0deg);
             }
 
             50% {
@@ -76,15 +73,15 @@
         $(function () {
             // 產生18張card
             for (let i = 0; i < 18; i++) {
-                $("#game").append(`<div class="card">
-                <div class="front"></div>
-                <div class="back"></div>
-            </div>`)
+                $("#game").append(` <div class="card">
+                                    <div class="front"></div>
+                                    <div class="back"></div>
+                                    </div>`)
             }
             // 指定數字
             for (let i = 0; i < $(".card").length; i++) {
                 let num = i % ($(".card").length / 2) + 1;
-                $(".card").eq(i).find(".front").css("background-image", `url(./動物/${num}.png)`)
+                $(".card").eq(i).find(".front").css("background-image", `url(./動物/${num}.PNG)`)
                 // 測試用,顯示卡號
                 $(".card").eq(i).attr("data-card", num)
             }
